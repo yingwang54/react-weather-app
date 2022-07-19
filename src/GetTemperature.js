@@ -2,12 +2,12 @@ import React, { useState } from "react";
 
 export default function GetTemperature(props) {
   let [fah, setFah] = useState("");
-  let [cel, setCel] = useState(props.celcius);
+
 
   function showFah(event) {
     event.preventDefault();
     setFah(Math.round(props.celcius * 1.8 + 32));
-    setCel("");
+   
   }
   function showCel(event) {
     event.preventDefault();

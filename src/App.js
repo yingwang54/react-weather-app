@@ -86,10 +86,12 @@ let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f75c6
       </form>
         
         <div className="Date">
+          <br />
           <h3><strong>Weather in next five days</strong></h3>
           <br/>
           <Weather />
         </div>
+        <p><a href="https://github.com/yingwang54/react-weather-app" target="_blank" rel="noreferrer">Open source</a> by Ying Wang</p>
         </div>
   );
 }
