@@ -4,6 +4,6 @@ import './Weather.css';
 export default function App() {
   
   return (
-      "Check here"
+      "add npm run build"
   );
 }
