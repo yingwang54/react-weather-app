@@ -2,7 +2,9 @@ import React, {useState} from "react";
 import axios from "axios";
 import "./App.css";
 import Weather from "./Weather";
+import GetTemperature from "./GetTemperature";
 export default function App() {
+
   let [city, setCity] = useState("");
   let [location, setLocation] = useState("");
   let [celcius, setCelcius] = useState("");
@@ -15,6 +17,9 @@ export default function App() {
   let date = now.getDate();
   let hours = now.getHours();
   let minutes = now.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${now.getMinutes()}`;
+  }
   let months = now.getMonth() + 1;
   let year = now.getFullYear();
   let days = [
@@ -28,10 +33,6 @@ export default function App() {
   ];
   let day = days[now.getDay()];
 
-  function showCity(event) {
-    event.preventDefault();
-    setLocation(`in ${city}`);
-  }
   function updateCity(event) {
     setCity(event.target.value);
   }
@@ -43,15 +44,20 @@ export default function App() {
     setIcon(response.data.weather[0].icon);
   }
 
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f75c6779ae980097755ff7503f54fb9c&units=metric`;
+let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f75c6779ae980097755ff7503f54fb9c&units=metric`;
   let iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`;
-  axios.get(url).then(showTemperature);
- 
+
+   function showCity(event) {
+    event.preventDefault();
+    setLocation(`in ${city}`);
+    axios.get(url).then(showTemperature);
+  }
   
   return (
     <div className="App">
       <h1>Weather {location}</h1>
-      <br/><h2>{celcius}°C</h2> 
+     
+      <GetTemperature celcius={celcius} />
       <div className="Date">
         <h3>
           {date}-{months}-{year} ({day}) {hours}:{minutes}
@@ -62,7 +68,7 @@ export default function App() {
       
         <div className="weatherToday">
           <div className="weatherDescription">
-             Description:{description}
+             Description: {description}
           </div>
           <div>Wind: {wind} km/h</div>
           <div>Humidity: {humidity}%</div>
@@ -79,11 +85,10 @@ export default function App() {
         <input type="submit" value="Search" className="col-3 rounded shadow p-2 m-2" onClick={showCity} />
       </form>
         
-        <Weather />
         <div className="Date">
-          <h2>10-07-2022 {""}  Monday</h2>
+          <h3><strong>Weather in next five days</strong></h3>
           <br/>
-          <p><strong>Weather in next five days</strong></p>
+          <Weather />
         </div>
         </div>
   );
