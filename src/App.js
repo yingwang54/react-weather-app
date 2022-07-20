@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
+//import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios';
 import "./App.css";
 import Weather from "./Weather";
 import GetTemperature from "./GetTemperature";
