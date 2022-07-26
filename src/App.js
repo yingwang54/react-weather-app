@@ -3,76 +3,58 @@ import axios from "axios";
 //import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios';
 import "./App.css";
 import Weather from "./Weather";
+import GetTime from "./GetTime";
 import GetTemperature from "./GetTemperature";
 export default function App() {
-
   let [city, setCity] = useState("");
   let [location, setLocation] = useState("");
-  let [celcius, setCelcius] = useState("");
-  let [description, setDescription] = useState("");
-  let [humidity, setHumidity] = useState("");
-  let [wind, setWind] = useState("");
-  let [icon, setIcon] = useState("");
+  let [weatherData, setWeatherData]=useState({});
 
-  let now = new Date();
-  let date = now.getDate();
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${now.getMinutes()}`;
-  }
-  let months = now.getMonth() + 1;
-  let year = now.getFullYear();
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
-  let day = days[now.getDay()];
-
+  
   function updateCity(event) {
     setCity(event.target.value);
   }
-  function showTemperature(response) {
-    setCelcius(Math.round(response.data.main.temp));
-    setDescription(response.data.weather[0].description);
-    setHumidity(response.data.main.humidity);
-    setWind(response.data.wind.speed);
-    setIcon(response.data.weather[0].icon);
+
+  function showCity(event) {
+    event.preventDefault();
+    setLocation(`in ${city}`); 
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f75c6779ae980097755ff7503f54fb9c&units=metric`;
+  axios.get(url).then(showTemperature); 
   }
 
-let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f75c6779ae980097755ff7503f54fb9c&units=metric`;
-  let iconUrl = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+  function showTemperature(response) {
 
-   function showCity(event) {
-    event.preventDefault();
-    setLocation(`in ${city}`);
-    axios.get(url).then(showTemperature);
+    setWeatherData({
+    celcius: Math.round(response.data.main.temp),
+    description: response.data.weather[0].description,
+    humidity: response.data.main.humidity,
+    wind:response.data.wind.speed,
+    icon:response.data.weather[0].icon})
   }
   
+  let iconUrl = `http://openweathermap.org/img/wn/${weatherData.icon}@2x.png`;
+  
+  
+
+ if (`${weatherData.celcius}`!==null){
   return (
     <div className="App">
       <h1>Weather {location}</h1>
-     
-      <GetTemperature celcius={celcius} />
-      <div className="Date">
-        <h3>
-          {date}-{months}-{year} ({day}) {hours}:{minutes}
-        </h3>
+      <GetTemperature celcius={weatherData.celcius} />
+      <div className="Date"> 
+          <GetTime />
       </div>
       <br />
       <div> <img src={iconUrl} alt="" /></div>
       
         <div className="weatherToday">
-          <div className="weatherDescription">
-             Description: {description}
+          
+          <div>
+           
+             Description: {weatherData.description}
           </div>
-          <div>Wind: {wind} km/h</div>
-          <div>Humidity: {humidity}%</div>
+          <div>Wind: {weatherData.wind} km/h</div>
+          <div>Humidity: {weatherData.humidity}%</div>
         </div>
        
       
@@ -94,5 +76,10 @@ let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f75c6
         </div>
         <p><a href="https://github.com/yingwang54/react-weather-app" target="_blank" rel="noreferrer">Open source</a> by Ying Wang</p>
         </div>
-  );
+  );}
+
+  else{
+    
+  showTemperature();
+}
 }
