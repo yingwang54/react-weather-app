@@ -1,29 +1,40 @@
 import React, { useState } from "react";
 
 export default function GetTemperature(props) {
-  let [fah, setFah] = useState("");
+  let [temp, setTemp] = useState("Cel");
 
 
   function showFah(event) {
     event.preventDefault();
-    setFah(Math.round(props.celcius * 1.8 + 32));
+    setTemp("Fah");
    
   }
   function showCel(event) {
     event.preventDefault();
-    setFah("");
+    setTemp("Cel");
   }
+
+  if (temp==="Cel"){
   return (
     <h2>
       {props.celcius}
-      <a href="/" onClick={showCel}>
         °C
-      </a>
       {""} | {""}
-      {fah}
       <a href="/" onClick={showFah}>
         °F
       </a>
     </h2>
-  );
+  );}
+  else{
+    return (
+      <h2>
+        <a href="/" onClick={showCel}>
+          °C
+        </a>
+        {""} | {""}
+        {Math.round(props.celcius * 1.8 + 32)} 
+          °F
+      </h2>
+    );
+  }
 }
