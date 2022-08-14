@@ -4,7 +4,7 @@ export default function GetTime(){
     let now = new Date();
   let date = now.getDate();
   if (date <10){
-    date = `0${now.getDate() + 1}`;
+    date = `0${now.getDate()+1}`;
   }
   let hours = now.getHours();
   let minutes = now.getMinutes();

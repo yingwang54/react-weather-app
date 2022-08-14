@@ -18,7 +18,7 @@ export default function App() {
   function showCity(event) {
     event.preventDefault();
     setLocation(`in ${city}`); 
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f75c6779ae980097755ff7503f54fb9c&units=metric`;
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=5f472b7acba333cd8a035ea85a0d4d4c&units=metric`;
   axios.get(url).then(showTemperature); 
   }
 
@@ -29,7 +29,10 @@ export default function App() {
     description: response.data.weather[0].description,
     humidity: response.data.main.humidity,
     wind:response.data.wind.speed,
-    icon:response.data.weather[0].icon})
+    icon:response.data.weather[0].icon,
+  lon:response.data.coord.lon,
+lat:response.data.coord.lat})
+
   }
   
   let iconUrl = `http://openweathermap.org/img/wn/${weatherData.icon}@2x.png`;
@@ -55,6 +58,8 @@ export default function App() {
           </div>
           <div>Wind: {weatherData.wind} km/h</div>
           <div>Humidity: {weatherData.humidity}%</div>
+      <div>lon: {Math.round(weatherData.lon)} lat: {Math.round(weatherData.lat)}
+      </div>
         </div>
        
       
@@ -72,7 +77,8 @@ export default function App() {
           <br />
           <h3><strong>Weather in next five days</strong></h3>
           <br/>
-          <Weather />
+          <Weather lat={weatherData.lat} lon={weatherData.lon}/>
+        
         </div>
         <p><a href="https://github.com/yingwang54/react-weather-app" target="_blank" rel="noreferrer">Open source</a> by Ying Wang</p>
         </div>
